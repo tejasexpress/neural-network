@@ -1,6 +1,14 @@
 import numpy as np
 import random
 
+def sigmoid(z):
+        # The sigmoid function.
+        return 1.0/(1.0+np.exp(-z))
+
+    def sigmoid_prime(z):
+        # Derivative of the sigmoid function.
+        return sigmoid(z)*(1-sigmoid(z))
+
 class Network(object):
 
     def __init__(self, sizes):
@@ -62,8 +70,7 @@ class Network(object):
             activation = sigmoid(z)
             activations.append(activation)
         # backrprop
-        delta = self.cost_derivative(activations[-1], y) * \
-            sigmoid_prime(zs[-1])
+        delta = self.cost_derivative(activations[-1], y) * sigmoid_prime(zs[-1])
         nabla_b[-1] = delta
         nabla_w[-1] = np.dot(delta, activations[-2].transpose())
         for l in xrange(2, self.num_layers):
@@ -84,10 +91,3 @@ class Network(object):
         # return model output - actual output
         return (output_activations-y)
     
-    def sigmoid(z):
-        # The sigmoid function.
-        return 1.0/(1.0+np.exp(-z))
-
-    def sigmoid_prime(z):
-        # Derivative of the sigmoid function.
-        return sigmoid(z)*(1-sigmoid(z))
